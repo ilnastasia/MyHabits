@@ -6,13 +6,13 @@ class InfoViewController: UIViewController {
     let scrollView: UIScrollView = {
         let view = UIScrollView()
         view.showsVerticalScrollIndicator = true
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         return view
     }()
     
     let contentView: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         return view
     }()
     
@@ -20,7 +20,7 @@ class InfoViewController: UIViewController {
         let label = UILabel()
         label.text = Content.infoName
         label.font = UIFont(name: "Helvetica-Bold", size : 20)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.toAutoLayout()
         return label
     }()
     
@@ -29,7 +29,7 @@ class InfoViewController: UIViewController {
         view.text = Content.infoFirstText
         view.numberOfLines = 0
         view.font = UIFont(name: "Helvetica-Regular", size : 17)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         return view
     }()
     
@@ -38,7 +38,7 @@ class InfoViewController: UIViewController {
         view.text = Content.infoSecondText
         view.numberOfLines = 0
         view.font = UIFont(name: "Helvetica-Regular", size : 17)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         return view
     }()
     
@@ -47,7 +47,7 @@ class InfoViewController: UIViewController {
         view.text = Content.infoThirdText
         view.numberOfLines = 0
         view.font = UIFont(name: "Helvetica-Regular", size : 17)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         return view
     }()
     
@@ -56,7 +56,7 @@ class InfoViewController: UIViewController {
         view.text = Content.infoFourthText
         view.numberOfLines = 0
         view.font = UIFont(name: "Helvetica-Regular", size : 17)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         return view
     }()
     
@@ -65,7 +65,7 @@ class InfoViewController: UIViewController {
         view.text = Content.infoFifthText
         view.numberOfLines = 0
         view.font = UIFont(name: "Helvetica-Regular", size : 17)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         return view
     }()
     
@@ -74,17 +74,16 @@ class InfoViewController: UIViewController {
         view.text = Content.infoSixthText
         view.numberOfLines = 0
         view.font = UIFont(name: "Helvetica-Regular", size : 17)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         return view
     }()
     
     let seventhTextView: UILabel = {
         let view = UILabel()
         view.text = Content.infoSeventhText
-        view.lineBreakMode = .byWordWrapping
         view.numberOfLines = 0
         view.font = UIFont(name: "Helvetica-Regular", size : 17)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         return view
     }()
     
@@ -93,32 +92,31 @@ class InfoViewController: UIViewController {
         view.text = Content.infoEighthText
         view.numberOfLines = 0
         view.font = UIFont(name: "Helvetica-Regular", size : 17)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         return view
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavigationBar()
+        setupViews()
+        setupConstraints()
+    }
+    
+    func setupNavigationBar() {
         navigationController?.navigationBar.isTranslucent = false
         navigationItem.title = "Информация"
-        
-        view.backgroundColor = .white
-        view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(firstTextView)
-        contentView.addSubview(secondTextView)
-        contentView.addSubview(thirdTextView)
-        contentView.addSubview(fourthTextView)
-        contentView.addSubview(fifthTextView)
-        contentView.addSubview(sixthTextView)
-        contentView.addSubview(seventhTextView)
-        contentView.addSubview(eighthTextView)
-        setupViews()
     }
     
     func setupViews() {
+        view.backgroundColor = .white
+        view.addSubviews(scrollView)
+        scrollView.addSubviews(contentView)
+        contentView.addSubviews(nameLabel, firstTextView, secondTextView, thirdTextView, fourthTextView, fifthTextView, sixthTextView, seventhTextView, eighthTextView)
+    }
+    
+    func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
