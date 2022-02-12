@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let infoController = InfoViewController()
         
         let barAppearance = UINavigationBarAppearance()
-        barAppearance.backgroundColor = .systemGray6
+        //barAppearance.backgroundColor = .systemGray6
         
         let navigationBar = UINavigationBar.appearance()
         navigationBar.standardAppearance = barAppearance
@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabbarAppearance.backgroundColor = .systemGray6
         
         let tabbar = UITabBar.appearance()
-        tabbar.tintColor = UIColor(red: 161 / 255, green: 22 / 255, blue: 204 / 255, alpha: 1)
+        tabbar.tintColor = Colors.purple
         tabbar.standardAppearance = tabbarAppearance
         if #available(iOS 15.0, *) {
             tabbar.scrollEdgeAppearance = tabbarAppearance

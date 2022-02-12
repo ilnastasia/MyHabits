@@ -105,11 +105,12 @@ class InfoViewController: UIViewController {
     }
     
     func setupNavigationBar() {
-        navigationController?.navigationBar.isTranslucent = false
+        //navigationController?.navigationBar.isTranslucent = false
         navigationItem.title = "Информация"
+        navigationController?.navigationBar.barTintColor = .systemGray6
     }
     
-    func setupViews() {
+    fileprivate func setupViews() {
         view.backgroundColor = .white
         view.addSubviews(scrollView)
         scrollView.addSubviews(contentView)

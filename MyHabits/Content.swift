@@ -1,5 +1,6 @@
 
 import Foundation
+import UIKit
 
 struct Content {
     static let infoName = "Привычка за 21 день"
@@ -19,4 +20,10 @@ struct Content {
     "6. На 90-й день соблюдения техники все лишнее из «прошлой жизни» перестает напоминать о себе, и человек, оглянувшись назад, осознает себя полностью обновившимся."
     static let infoEighthText =
     "Источник: psychbook.ru "
+}
+
+struct Colors {
+    static let purple = UIColor(red: 161 / 255, green: 22 / 255, blue: 204 / 255, alpha: 1)
+    static let blue = UIColor(red: 41 / 255, green: 109 / 255, blue: 255 / 255, alpha: 1)
+    static let orange = UIColor(red: 255 / 255, green: 159 / 255, blue: 79 / 255, alpha: 1)
 }
