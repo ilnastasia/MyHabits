@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D066C5027B7EE8800412E14 /* HabitDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D066C4F27B7EE8800412E14 /* HabitDetailsViewController.swift */; };
 		5D422FAC27B0008300EDF99F /* Content.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D422FAB27B0008300EDF99F /* Content.swift */; };
 		5D422FAE27B03DC200EDF99F /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D422FAD27B03DC200EDF99F /* Extension.swift */; };
 		5D422FB027B043BF00EDF99F /* HabitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D422FAF27B043BF00EDF99F /* HabitViewController.swift */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5D066C4F27B7EE8800412E14 /* HabitDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitDetailsViewController.swift; sourceTree = "<group>"; };
 		5D422FAB27B0008300EDF99F /* Content.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Content.swift; sourceTree = "<group>"; };
 		5D422FAD27B03DC200EDF99F /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		5D422FAF27B043BF00EDF99F /* HabitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitViewController.swift; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				5DB9A9EE27B15FFD0041ADC7 /* ColorPickerViewController.swift */,
 				5D78DF6C27B400EF005C53EC /* ProgressCollectionViewCell.swift */,
 				5D78DF6E27B41A74005C53EC /* HabitCollectionViewCell.swift */,
+				5D066C4F27B7EE8800412E14 /* HabitDetailsViewController.swift */,
 			);
 			path = MyHabits;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 				5D6F589227AF0A180066440E /* HabitsViewController.swift in Sources */,
 				5D422FB027B043BF00EDF99F /* HabitViewController.swift in Sources */,
 				5D6F589427AF0A2D0066440E /* InfoViewController.swift in Sources */,
+				5D066C5027B7EE8800412E14 /* HabitDetailsViewController.swift in Sources */,
 				5D422FAE27B03DC200EDF99F /* Extension.swift in Sources */,
 				5D78DF6D27B400EF005C53EC /* ProgressCollectionViewCell.swift in Sources */,
 				5D422FAC27B0008300EDF99F /* Content.swift in Sources */,

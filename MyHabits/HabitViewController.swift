@@ -3,6 +3,8 @@ import UIKit
 
 class HabitViewController: UIViewController {
     
+    var currentHabit: Habit?
+    
     let newHabitNameLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
@@ -79,6 +81,14 @@ class HabitViewController: UIViewController {
         return picker
     }()
     
+    let deleteHabitButton: UIButton = {
+        let button = UIButton()
+        button.toAutoLayout()
+        button.setTitle("Удалить привычку", for: .normal)
+        button.setTitleColor(.systemRed, for: .normal)
+        return button
+    }()
+    
     @objc func timeChanged(_ sender: UIDatePicker) {
         let components = Calendar.current.dateComponents([.hour, .minute], from: sender.date)
             if let hour = components.hour, let minute = components.minute {
@@ -126,6 +136,7 @@ class HabitViewController: UIViewController {
             timePicker.topAnchor.constraint(equalTo: everyDayLabel.bottomAnchor, constant: 15),
             timePicker.leftAnchor.constraint(equalTo: view.leftAnchor),
             timePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            
         ])
     }
 
@@ -133,7 +144,6 @@ class HabitViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .white
-        //navigationController?.navigationBar.isTranslucent = false
         navigationItem.title = "Создать"
         navigationController?.navigationBar.barTintColor = .systemGray6
         
@@ -149,7 +159,37 @@ class HabitViewController: UIViewController {
         saveButton.tintColor = Colors.purple
         saveButton.setTitleTextAttributes([NSAttributedString.Key.font : UIFont(name: "Helvetica-Bold", size: 17) ?? ""], for: .normal)
         self.navigationItem.rightBarButtonItem = saveButton
+        
+        let viewControllers = self.navigationController?.viewControllers
+        
+        if (viewControllers?.count ?? 0) < 2 {
+            return
+        } else {
+            let previousVC = viewControllers?[(viewControllers?.count ?? 0) - 2]
+            if previousVC is HabitDetailsViewController {
+                navigationItem.title = "Править"
+                view.addSubviews(deleteHabitButton)
+                NSLayoutConstraint.activate([
+                    deleteHabitButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -18),
+                    deleteHabitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                    deleteHabitButton.widthAnchor.constraint(equalToConstant: 170),
+                    deleteHabitButton.heightAnchor.constraint(equalToConstant: 22)
+                ])
+                
+                deleteHabitButton.addTarget(self, action: #selector(deleteButtonClicked), for: .touchUpInside)
+            }
+        }
     }
+    
+    @objc func deleteButtonClicked() {
+        deletingHabit(with: currentHabit!)
+    }
+    
+    func deletingHabit(with habit: Habit) {
+        let store = HabitsStore.shared
+        store.habits.removeAll(where: {$0.name == habit.name})
+    }
+    
     
     @objc func returnButtonClicked() {
         dismiss(animated: true, completion: nil)
@@ -162,7 +202,7 @@ class HabitViewController: UIViewController {
         let store = HabitsStore.shared
         store.habits.append(newHabit)
         dismiss(animated: true, completion: nil)
-        print(store.habits.count)
+        //print(store.habits.count)
     }
     
     @objc func tapToHideKeyboard() {

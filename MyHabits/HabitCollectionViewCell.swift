@@ -8,6 +8,7 @@ protocol ReusableHabitView: AnyObject {
 class HabitCollectionViewCell: UICollectionViewCell {
     
     let store = HabitsStore.shared
+    var currentHabit: Habit?
     
     let habitNameLabel: UILabel = {
         let label = UILabel()
@@ -38,11 +39,9 @@ class HabitCollectionViewCell: UICollectionViewCell {
     let habitTrackingButton: UIButton = {
         let button = UIButton()
         button.toAutoLayout()
-        //button.clipsToBounds = true
         button.layer.cornerRadius = 19
         button.layer.borderWidth = 2
-        button.addTarget(self, action: #selector(trackingButtonIsClicked(habit:)), for: .touchUpInside)
-        // цвет границы
+        button.addTarget(self, action: #selector(trackingButtonIsClicked), for: .touchUpInside)
         return button
     }()
     
@@ -58,11 +57,15 @@ class HabitCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func trackingButtonIsClicked(habit: Habit) {
+    @objc func trackingButtonIsClicked() {
+        tracking(with: currentHabit!)
+    }
+    
+    func tracking(with habit: Habit) {
         habitTrackingButton.backgroundColor = habitNameLabel.textColor
         habitTrackingButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
         habitTrackingButton.tintColor = .white
-        
+
         if habit.isAlreadyTakenToday == false {
             store.track(habit)
         }
@@ -96,8 +99,12 @@ class HabitCollectionViewCell: UICollectionViewCell {
         habitNameLabel.text = habit.name
         habitNameLabel.textColor = habit.color
         habitTimeLabel.text = habit.dateString
-        habitsCounterLabel.layer.borderColor = habit.color.cgColor
+        habitTrackingButton.layer.borderColor = habit.color.cgColor
+        currentHabit = habit
+//        let editController = HabitViewController()
+//        editController.currentHabit = habit
     }
+    
 }
 
 extension HabitCollectionViewCell: ReusableHabitView {

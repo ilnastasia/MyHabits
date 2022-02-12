@@ -11,7 +11,7 @@ class HabitsViewController: UIViewController {
         collectionView.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: ProgressCollectionViewCell.progressIdentifier)
         collectionView.register(HabitCollectionViewCell.self, forCellWithReuseIdentifier: HabitCollectionViewCell.habitIdentifier)
         collectionView.toAutoLayout()
-        collectionView.reloadData()
+        //collectionView.reloadData()
         collectionView.backgroundColor = .clear
         return collectionView
     }()
@@ -29,6 +29,10 @@ class HabitsViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = addButton
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        collectionView.reloadData()
+    }
+    
     fileprivate func setupViews() {
         view.backgroundColor = .systemGray6
         view.addSubviews(collectionView)
@@ -44,7 +48,7 @@ class HabitsViewController: UIViewController {
         ])
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.reloadData()
+        //collectionView.reloadData()
     }
 
     @objc func toNewHabit() {
@@ -56,9 +60,13 @@ class HabitsViewController: UIViewController {
     
     fileprivate func setupNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationItem.largeTitleDisplayMode = .always
         navigationItem.title = "Сегодня"
         navigationController?.navigationBar.barTintColor = .white
+        
     }
+    
+    
 }
 
 extension HabitsViewController: UICollectionViewDataSource {
@@ -117,6 +125,17 @@ extension HabitsViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 12
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailsController = HabitDetailsViewController()
+        if indexPath.section != 0 {
+            navigationController?.pushViewController(detailsController, animated: true)
+        }
+        let habit = store.habits[indexPath.row]
+        detailsController.habitName = habit.name
+        detailsController.currentHabit = habit
+        
     }
 }
 
