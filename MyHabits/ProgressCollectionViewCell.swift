@@ -23,6 +23,7 @@ class ProgressCollectionViewCell: UICollectionViewCell {
         view.trackTintColor = .systemGray2
         view.progressTintColor = Colors.purple
         view.layer.cornerRadius = 3.5
+        
         view.clipsToBounds = true
         return view
     }()
@@ -43,7 +44,7 @@ class ProgressCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = .white
         contentView.addSubviews(motivatingLabel, progressView, percentLabel)
         setupConstraints()
-        setProgressOfHabits()
+        //setProgressOfHabits()
     }
     
     required init?(coder: NSCoder) {
@@ -53,7 +54,7 @@ class ProgressCollectionViewCell: UICollectionViewCell {
     func setProgressOfHabits() {
         let store = HabitsStore.shared
         progressView.setProgress(store.todayProgress, animated: true)
-        percentLabel.text = String(Int(store.todayProgress) * 100) + "%"
+        percentLabel.text = String(Int(store.todayProgress * 100.0)) + "%"
     }
     
     fileprivate func setupConstraints() {
@@ -64,8 +65,8 @@ class ProgressCollectionViewCell: UICollectionViewCell {
             motivatingLabel.heightAnchor.constraint(equalToConstant: 18),
             
             progressView.topAnchor.constraint(equalTo: motivatingLabel.bottomAnchor, constant: 10),
-            progressView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12),
-            progressView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -12),
+//            progressView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12),
+//            progressView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -12),
             progressView.heightAnchor.constraint(equalToConstant: 7),
             
             percentLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
@@ -73,7 +74,13 @@ class ProgressCollectionViewCell: UICollectionViewCell {
             percentLabel.widthAnchor.constraint(equalToConstant: 50),
             percentLabel.heightAnchor.constraint(equalToConstant: 18)
         ])
+        let constraint = progressView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12)
+        constraint.isActive = true
+        constraint.priority = UILayoutPriority(751)
         
+        let constraint2 = progressView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -12)
+        constraint2.isActive = true
+        constraint2.priority = UILayoutPriority(751)
     }
 }
 

@@ -9,13 +9,13 @@ class HabitCollectionViewCell: UICollectionViewCell {
     
     let store = HabitsStore.shared
     var currentHabit: Habit?
+    var habitTrackClosure: (()->())?
     
     let habitNameLabel: UILabel = {
         let label = UILabel()
         label.toAutoLayout()
         label.font = UIFont(name: "Helvetica-Bold", size: 17)
-        //label.numberOfLines = 0  разобраться с количеством строк
-        
+        label.numberOfLines = 2
         return label
     }()
     
@@ -32,7 +32,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
         label.toAutoLayout()
         label.textColor = .systemGray
         label.font = UIFont(name: "Helvetica-Regular", size: 13)
-        label.text = "Счетчик: "
+        //label.text = "Счетчик: "
         return label
     }()
     
@@ -51,24 +51,34 @@ class HabitCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 8
         contentView.addSubviews(habitNameLabel, habitTimeLabel, habitsCounterLabel, habitTrackingButton)
         setupConstraints()
+        
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func trackingButtonIsClicked() {
-        tracking(with: currentHabit!)
+    @objc func trackingButtonIsClicked(sender: UIButton) {
+        fillCircle()
+        habitTrackClosure?()
     }
     
-    func tracking(with habit: Habit) {
+    func fillCircle() {
         habitTrackingButton.backgroundColor = habitNameLabel.textColor
         habitTrackingButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
         habitTrackingButton.tintColor = .white
+    }
 
-        if habit.isAlreadyTakenToday == false {
-            store.track(habit)
-        }
+    public func tracking(with habit: Habit) {
+//        habitTrackingButton.backgroundColor = habitNameLabel.textColor
+//        habitTrackingButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+//        habitTrackingButton.tintColor = .white
+
+//        if habit.isAlreadyTakenToday == false {
+//            store.track(habit)
+//        }
+//        MyHabits.collectionView.reloadData()
     }
     
     fileprivate func setupConstraints() {
@@ -76,17 +86,16 @@ class HabitCollectionViewCell: UICollectionViewCell {
             habitNameLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20),
             habitNameLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20),
             habitNameLabel.widthAnchor.constraint(equalToConstant: 300),
-            habitNameLabel.heightAnchor.constraint(equalToConstant: 22),
             
             habitTimeLabel.topAnchor.constraint(equalTo: habitNameLabel.bottomAnchor, constant: 4),
             habitTimeLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20),
             habitTimeLabel.widthAnchor.constraint(equalToConstant: 200),
             habitTimeLabel.heightAnchor.constraint(equalToConstant: 15),
             
-            habitsCounterLabel.topAnchor.constraint(equalTo: habitTimeLabel.bottomAnchor, constant: 30),
             habitsCounterLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 20),
             habitsCounterLabel.widthAnchor.constraint(equalToConstant: 188),
             habitsCounterLabel.heightAnchor.constraint(equalToConstant: 18),
+            habitsCounterLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
             
             habitTrackingButton.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -25),
             habitTrackingButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -100,10 +109,15 @@ class HabitCollectionViewCell: UICollectionViewCell {
         habitNameLabel.textColor = habit.color
         habitTimeLabel.text = habit.dateString
         habitTrackingButton.layer.borderColor = habit.color.cgColor
-        currentHabit = habit
-//        let editController = HabitViewController()
-//        editController.currentHabit = habit
+//        let actionCompleted = currentHabit?.isAlreadyTakenToday
+//        if actionCompleted == false {
+//            fillCircle()
+//        }
+        
+//        habitsCounterLabel.text = "Счетчик: \(HabitsViewController.counter)"
+
     }
+    
     
 }
 

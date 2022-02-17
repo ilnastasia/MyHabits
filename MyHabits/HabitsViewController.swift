@@ -4,6 +4,7 @@ import UIKit
 class HabitsViewController: UIViewController {
     
     let store = HabitsStore.shared
+    var counter = 0
     
     let collectionView: UICollectionView = {
         let viewLayout = UICollectionViewFlowLayout()
@@ -11,7 +12,6 @@ class HabitsViewController: UIViewController {
         collectionView.register(ProgressCollectionViewCell.self, forCellWithReuseIdentifier: ProgressCollectionViewCell.progressIdentifier)
         collectionView.register(HabitCollectionViewCell.self, forCellWithReuseIdentifier: HabitCollectionViewCell.habitIdentifier)
         collectionView.toAutoLayout()
-        //collectionView.reloadData()
         collectionView.backgroundColor = .clear
         return collectionView
     }()
@@ -78,6 +78,7 @@ extension HabitsViewController: UICollectionViewDataSource {
             ) as? ProgressCollectionViewCell else {
                 fatalError()
             }
+            cell.setProgressOfHabits()
             return cell
         } else {
             guard let cell: HabitCollectionViewCell = collectionView.dequeueReusableCell(
@@ -87,7 +88,22 @@ extension HabitsViewController: UICollectionViewDataSource {
                 fatalError()
             }
             let habit = store.habits[indexPath.row]
+            let actionCompleted = habit.isAlreadyTakenToday
             cell.update(with: habit)
+            cell.habitTrackClosure = { [weak self] in
+                if actionCompleted == false {
+                    cell.fillCircle()
+                    HabitsStore.shared.track(habit)
+                    self?.counter += 1
+                } 
+                
+                self?.collectionView.reloadData()
+            }
+            
+            cell.habitsCounterLabel.text = "Счетчик: \(counter)"
+//            if HabitsStore.shared.habit(habit, isTrackedIn: HabitsStore.shared.dates[indexPath.row]) {
+//                cell.fillCircle()
+//            }
             return cell
         }
     }

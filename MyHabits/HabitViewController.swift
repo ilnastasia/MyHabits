@@ -3,7 +3,9 @@ import UIKit
 
 class HabitViewController: UIViewController {
     
+    let store = HabitsStore.shared
     var currentHabit: Habit?
+    var habitName: String?
     
     let newHabitNameLabel: UILabel = {
         let label = UILabel()
@@ -20,7 +22,6 @@ class HabitViewController: UIViewController {
         field.font = UIFont(name: "Helvetica-Bold", size: 17)
         field.borderStyle = .none
         field.placeholder = "Бегать по утрам, спать 8 часов и т.п."
-        field.clearsOnBeginEditing = true
         return field
     }()
     
@@ -130,7 +131,7 @@ class HabitViewController: UIViewController {
             
             pickedTimeLabel.topAnchor.constraint(equalTo: everyDayLabel.topAnchor),
             pickedTimeLabel.leftAnchor.constraint(equalTo: everyDayLabel.rightAnchor),
-            pickedTimeLabel.widthAnchor.constraint(equalToConstant: 100),
+            pickedTimeLabel.widthAnchor.constraint(equalToConstant: 200),
             pickedTimeLabel.heightAnchor.constraint(equalToConstant: 23),
             
             timePicker.topAnchor.constraint(equalTo: everyDayLabel.bottomAnchor, constant: 15),
@@ -177,16 +178,80 @@ class HabitViewController: UIViewController {
                 ])
                 
                 deleteHabitButton.addTarget(self, action: #selector(deleteButtonClicked), for: .touchUpInside)
+
+                let returnButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(returnButtonOnEditControllerClicked))
+                returnButton.tintColor = Colors.purple
+                self.navigationItem.leftBarButtonItem = returnButton
+                
+                newHabitNameField.text = currentHabit?.name
+                pickColorButton.backgroundColor = currentHabit?.color
+                timePicker.date = currentHabit!.date
+                pickedTimeLabel.text = currentHabit?.dateString
+                
+                let saveButton = UIBarButtonItem(title: "Сохранить", style: .plain, target: self, action: #selector(saveButtonOnEditControllerClicked))
+                saveButton.tintColor = Colors.purple
+                saveButton.setTitleTextAttributes([NSAttributedString.Key.font : UIFont(name: "Helvetica-Bold", size: 17) ?? ""], for: .normal)
+                self.navigationItem.rightBarButtonItem = saveButton
             }
         }
     }
     
+    @objc func returnButtonOnEditControllerClicked() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func saveButtonOnEditControllerClicked() {
+        let habitsController = self.navigationController?.viewControllers.filter({$0 is HabitsViewController}).first
+        self.navigationController?.popToViewController(habitsController!, animated: true)
+
+        store.habits.filter({$0.name == currentHabit?.name}).forEach({$0.name = newHabitNameField.text ?? ""})
+        store.habits.filter({$0.date == currentHabit?.date}).forEach({$0.date = timePicker.date})
+        store.habits.filter({$0.color == currentHabit?.color}).forEach({$0.color = pickColorButton.backgroundColor ?? .black})
+        store.save()
+    }
+    
     @objc func deleteButtonClicked() {
-        deletingHabit(with: currentHabit!)
+        
+        let alert = UIAlertController(title: "Удалить привычку", message: "Вы хотите удалить привычку \"\(String(describing: currentHabit!.name))\"?", preferredStyle: .alert)
+        present(alert, animated: true, completion: nil)
+        
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: {action in
+            switch action.style {
+            case .default:
+                print("")
+
+            case .cancel:
+                self.dismiss(animated: true, completion: nil)
+
+            case .destructive:
+                self.deletingHabit(with: self.currentHabit!)
+                let habitsController =  self.navigationController?.viewControllers.filter({$0 is HabitsViewController}).first
+                self.navigationController?.popToViewController(habitsController!, animated: true)
+            @unknown default:
+                fatalError()
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Удалить", style: .destructive, handler: { action in
+            switch action.style {
+            case .default:
+                print("")
+
+            case .cancel:
+                self.dismiss(animated: true, completion: nil)
+
+            case .destructive:
+                self.deletingHabit(with: self.currentHabit!)
+                let habitsController = self.navigationController?.viewControllers.filter({$0 is HabitsViewController}).first
+                self.navigationController?.popToViewController(habitsController!, animated: true)
+            @unknown default:
+                fatalError()
+            }
+        }))
     }
     
     func deletingHabit(with habit: Habit) {
-        let store = HabitsStore.shared
+        //let store = HabitsStore.shared
         store.habits.removeAll(where: {$0.name == habit.name})
     }
     
@@ -199,7 +264,7 @@ class HabitViewController: UIViewController {
         let newHabit = Habit(name: newHabitNameField.text ?? "",
                              date: timePicker.date,
                              color: pickColorButton.backgroundColor ?? .black)
-        let store = HabitsStore.shared
+        //let store = HabitsStore.shared
         store.habits.append(newHabit)
         dismiss(animated: true, completion: nil)
         //print(store.habits.count)
@@ -213,6 +278,7 @@ class HabitViewController: UIViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+    
 }
 
 extension HabitViewController: UIColorPickerViewControllerDelegate {
