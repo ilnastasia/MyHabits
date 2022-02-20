@@ -4,7 +4,6 @@ import UIKit
 class HabitsViewController: UIViewController {
     
     let store = HabitsStore.shared
-    var counter = 0
     
     let collectionView: UICollectionView = {
         let viewLayout = UICollectionViewFlowLayout()
@@ -18,8 +17,7 @@ class HabitsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+
         setupNavigationBar()
         setupViews()
         setupConstraints()
@@ -36,7 +34,6 @@ class HabitsViewController: UIViewController {
     fileprivate func setupViews() {
         view.backgroundColor = .systemGray6
         view.addSubviews(collectionView)
-        
     }
     
     func setupConstraints() {
@@ -48,7 +45,6 @@ class HabitsViewController: UIViewController {
         ])
         collectionView.dataSource = self
         collectionView.delegate = self
-        //collectionView.reloadData()
     }
 
     @objc func toNewHabit() {
@@ -63,10 +59,7 @@ class HabitsViewController: UIViewController {
         self.navigationItem.largeTitleDisplayMode = .always
         navigationItem.title = "Сегодня"
         navigationController?.navigationBar.barTintColor = .white
-        
     }
-    
-    
 }
 
 extension HabitsViewController: UICollectionViewDataSource {
@@ -92,18 +85,10 @@ extension HabitsViewController: UICollectionViewDataSource {
             cell.update(with: habit)
             cell.habitTrackClosure = { [weak self] in
                 if actionCompleted == false {
-                    cell.fillCircle()
                     HabitsStore.shared.track(habit)
-                    self?.counter += 1
-                } 
-                
+                }
                 self?.collectionView.reloadData()
             }
-            
-            cell.habitsCounterLabel.text = "Счетчик: \(counter)"
-//            if HabitsStore.shared.habit(habit, isTrackedIn: HabitsStore.shared.dates[indexPath.row]) {
-//                cell.fillCircle()
-//            }
             return cell
         }
     }
@@ -151,7 +136,6 @@ extension HabitsViewController: UICollectionViewDelegateFlowLayout {
         let habit = store.habits[indexPath.row]
         detailsController.habitName = habit.name
         detailsController.currentHabit = habit
-        
     }
 }
 

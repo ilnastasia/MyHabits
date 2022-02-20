@@ -42,26 +42,12 @@ class HabitViewController: UIViewController {
         button.addTarget(self, action: #selector(pickColorButtonClicked), for: .touchUpInside)
         return button
     }()
-    
-    @objc func pickColorButtonClicked() {
-        let colorPicker = ColorPickerViewController()
-        colorPicker.selectedColor = pickColorButton.backgroundColor ?? .black
-        colorPicker.delegate = self
-        self.navigationController?.pushViewController(colorPicker, animated: true)   
-    }
-    
+
     let pickTimeName: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "KohinoorBangla-Semibold", size: 13)
         label.text = "ВРЕМЯ"
         label.toAutoLayout()
-        return label
-    }()
-    
-    let everyDayLabel: UILabel = {
-        let label = UILabel()
-        label.toAutoLayout()
-        label.text = "Каждый день в "
         return label
     }()
     
@@ -93,8 +79,15 @@ class HabitViewController: UIViewController {
     @objc func timeChanged(_ sender: UIDatePicker) {
         let components = Calendar.current.dateComponents([.hour, .minute], from: sender.date)
             if let hour = components.hour, let minute = components.minute {
-                pickedTimeLabel.text = "\(hour):\(minute)"
+                pickedTimeLabel.text = "Каждый день в: \(hour):\(minute)"
         }
+    }
+    
+    @objc func pickColorButtonClicked() {
+        let colorPicker = ColorPickerViewController()
+        colorPicker.selectedColor = pickColorButton.backgroundColor ?? .black
+        colorPicker.delegate = self
+        self.navigationController?.pushViewController(colorPicker, animated: true)
     }
     
     fileprivate func setupConstraints() {
@@ -124,17 +117,12 @@ class HabitViewController: UIViewController {
             pickTimeName.widthAnchor.constraint(equalToConstant: 50),
             pickTimeName.heightAnchor.constraint(equalToConstant: 18),
             
-            everyDayLabel.topAnchor.constraint(equalTo: pickTimeName.bottomAnchor, constant: 7),
-            everyDayLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-            everyDayLabel.widthAnchor.constraint(equalToConstant: 125),
-            everyDayLabel.heightAnchor.constraint(equalToConstant: 23),
-            
-            pickedTimeLabel.topAnchor.constraint(equalTo: everyDayLabel.topAnchor),
-            pickedTimeLabel.leftAnchor.constraint(equalTo: everyDayLabel.rightAnchor),
+            pickedTimeLabel.topAnchor.constraint(equalTo: pickTimeName.bottomAnchor, constant: 7),
+            pickedTimeLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
             pickedTimeLabel.widthAnchor.constraint(equalToConstant: 200),
             pickedTimeLabel.heightAnchor.constraint(equalToConstant: 23),
             
-            timePicker.topAnchor.constraint(equalTo: everyDayLabel.bottomAnchor, constant: 15),
+            timePicker.topAnchor.constraint(equalTo: pickedTimeLabel.bottomAnchor, constant: 15),
             timePicker.leftAnchor.constraint(equalTo: view.leftAnchor),
             timePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             
@@ -148,7 +136,7 @@ class HabitViewController: UIViewController {
         navigationItem.title = "Создать"
         navigationController?.navigationBar.barTintColor = .systemGray6
         
-        view.addSubviews(newHabitNameLabel, newHabitNameField, newHabitColorLabel, pickColorButton, pickTimeName, everyDayLabel, pickedTimeLabel, timePicker)
+        view.addSubviews(newHabitNameLabel, newHabitNameField, newHabitColorLabel, pickColorButton, pickTimeName, pickedTimeLabel, timePicker)
         setupConstraints()
         tapToHideKeyboard()
         
@@ -251,7 +239,6 @@ class HabitViewController: UIViewController {
     }
     
     func deletingHabit(with habit: Habit) {
-        //let store = HabitsStore.shared
         store.habits.removeAll(where: {$0.name == habit.name})
     }
     
@@ -264,10 +251,8 @@ class HabitViewController: UIViewController {
         let newHabit = Habit(name: newHabitNameField.text ?? "",
                              date: timePicker.date,
                              color: pickColorButton.backgroundColor ?? .black)
-        //let store = HabitsStore.shared
         store.habits.append(newHabit)
         dismiss(animated: true, completion: nil)
-        //print(store.habits.count)
     }
     
     @objc func tapToHideKeyboard() {

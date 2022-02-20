@@ -6,7 +6,7 @@ class HabitDetailsViewController: UIViewController {
     var habitName: String?
     var currentHabit: Habit?
     let store = HabitsStore.shared
-    //static var count = 0
+    var counter = 0
     
     fileprivate enum CellReuseIdentifiers: String {
         case tracking = "TrackingCellReuse"
@@ -17,6 +17,7 @@ class HabitDetailsViewController: UIViewController {
         view.toAutoLayout()
         view.allowsSelection = false
         view.backgroundColor = .clear
+        view.tintColor = Colors.purple
         view.register(HabitDetailsTableViewCell.self, forCellReuseIdentifier: CellReuseIdentifiers.tracking.rawValue)
         return view
     }()
@@ -67,12 +68,12 @@ extension HabitDetailsViewController: UITableViewDataSource {
             fatalError()
         }
         
-        cell.trackDayLabel.text = HabitsStore.shared.trackDateString(forIndex: indexPath.row)
-        
         if HabitsStore.shared.habit(currentHabit!, isTrackedIn: store.dates[indexPath.row]) {
             cell.accessoryType = .checkmark
-            //HabitDetailsViewController.count += 1
+            counter += 1
         }
+        
+        cell.trackDayLabel.text = HabitsStore.shared.trackDateString(forIndex: indexPath.row)
         return cell
     }
     
