@@ -61,7 +61,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
     @objc func trackingButtonIsClicked(sender: UIButton) {
         fillCircle()
         habitTrackClosure?()
-        //addingToCounter()
+        addingToCounter()
     }
     
     func addingToCounter() {

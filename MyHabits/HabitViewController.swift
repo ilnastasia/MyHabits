@@ -139,7 +139,11 @@ class HabitViewController: UIViewController {
         view.addSubviews(newHabitNameLabel, newHabitNameField, newHabitColorLabel, pickColorButton, pickTimeName, pickedTimeLabel, timePicker)
         setupConstraints()
         tapToHideKeyboard()
-        
+        editController()
+        setupNavigationBarButtons()
+    }
+    
+    func setupNavigationBarButtons() {
         let returnButton = UIBarButtonItem(title: "Отменить", style: .plain, target: self, action: #selector(returnButtonClicked))
         returnButton.tintColor = Colors.purple
         self.navigationItem.leftBarButtonItem = returnButton
@@ -148,7 +152,9 @@ class HabitViewController: UIViewController {
         saveButton.tintColor = Colors.purple
         saveButton.setTitleTextAttributes([NSAttributedString.Key.font : UIFont(name: "Helvetica-Bold", size: 17) ?? ""], for: .normal)
         self.navigationItem.rightBarButtonItem = saveButton
-        
+    }
+    
+    func editController() {
         let viewControllers = self.navigationController?.viewControllers
         
         if (viewControllers?.count ?? 0) < 2 {
@@ -263,7 +269,6 @@ class HabitViewController: UIViewController {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-    
 }
 
 extension HabitViewController: UIColorPickerViewControllerDelegate {

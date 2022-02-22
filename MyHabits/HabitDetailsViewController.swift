@@ -1,4 +1,3 @@
-
 import UIKit
 
 class HabitDetailsViewController: UIViewController {
@@ -6,7 +5,6 @@ class HabitDetailsViewController: UIViewController {
     var habitName: String?
     var currentHabit: Habit?
     let store = HabitsStore.shared
-    var counter = 0
     
     fileprivate enum CellReuseIdentifiers: String {
         case tracking = "TrackingCellReuse"
@@ -56,7 +54,6 @@ class HabitDetailsViewController: UIViewController {
         habitController.currentHabit = self.currentHabit
         habitController.habitName = currentHabit?.name
     }
-
 }
 
 extension HabitDetailsViewController: UITableViewDataSource {
@@ -70,7 +67,6 @@ extension HabitDetailsViewController: UITableViewDataSource {
         
         if HabitsStore.shared.habit(currentHabit!, isTrackedIn: store.dates[indexPath.row]) {
             cell.accessoryType = .checkmark
-            counter += 1
         }
         
         cell.trackDayLabel.text = HabitsStore.shared.trackDateString(forIndex: indexPath.row)

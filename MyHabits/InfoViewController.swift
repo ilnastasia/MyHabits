@@ -105,7 +105,6 @@ class InfoViewController: UIViewController {
     }
     
     func setupNavigationBar() {
-        //navigationController?.navigationBar.isTranslucent = false
         navigationItem.title = "Информация"
         navigationController?.navigationBar.barTintColor = .systemGray6
     }
@@ -117,7 +116,7 @@ class InfoViewController: UIViewController {
         contentView.addSubviews(nameLabel, firstTextView, secondTextView, thirdTextView, fourthTextView, fifthTextView, sixthTextView, seventhTextView, eighthTextView)
     }
     
-    func setupConstraints() {
+    fileprivate func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),

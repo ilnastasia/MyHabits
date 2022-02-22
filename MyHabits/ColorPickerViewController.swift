@@ -8,7 +8,4 @@ class ColorPickerViewController: UIColorPickerViewController {
 
         view.backgroundColor = .white
     }
-    
-    
-
 }

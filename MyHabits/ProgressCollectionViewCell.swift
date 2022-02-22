@@ -44,7 +44,6 @@ class ProgressCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = .white
         contentView.addSubviews(motivatingLabel, progressView, percentLabel)
         setupConstraints()
-        //setProgressOfHabits()
     }
     
     required init?(coder: NSCoder) {
@@ -65,8 +64,6 @@ class ProgressCollectionViewCell: UICollectionViewCell {
             motivatingLabel.heightAnchor.constraint(equalToConstant: 18),
             
             progressView.topAnchor.constraint(equalTo: motivatingLabel.bottomAnchor, constant: 10),
-//            progressView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 12),
-//            progressView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -12),
             progressView.heightAnchor.constraint(equalToConstant: 7),
             
             percentLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),

@@ -3,8 +3,6 @@ import UIKit
 
 class HabitsViewController: UIViewController {
     
-    let store = HabitsStore.shared
-    
     let collectionView: UICollectionView = {
         let viewLayout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: viewLayout)
@@ -21,10 +19,7 @@ class HabitsViewController: UIViewController {
         setupNavigationBar()
         setupViews()
         setupConstraints()
-        
-        let addButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(toNewHabit))
-        addButton.tintColor = Colors.purple
-        self.navigationItem.rightBarButtonItem = addButton
+        setupAddButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,7 +31,13 @@ class HabitsViewController: UIViewController {
         view.addSubviews(collectionView)
     }
     
-    func setupConstraints() {
+    func setupAddButton() {
+        let addButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(toNewHabit))
+        addButton.tintColor = Colors.purple
+        self.navigationItem.rightBarButtonItem = addButton
+    }
+    
+    fileprivate func setupConstraints() {
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -80,7 +81,7 @@ extension HabitsViewController: UICollectionViewDataSource {
             ) as? HabitCollectionViewCell else {
                 fatalError()
             }
-            let habit = store.habits[indexPath.row]
+            let habit = HabitsStore.shared.habits[indexPath.row]
             let actionCompleted = habit.isAlreadyTakenToday
             cell.update(with: habit)
             cell.habitTrackClosure = { [weak self] in
@@ -97,7 +98,7 @@ extension HabitsViewController: UICollectionViewDataSource {
         if section == 0 {
             return 1
         } else {
-            return store.habits.count
+            return HabitsStore.shared.habits.count
         }
     }
     
@@ -133,7 +134,7 @@ extension HabitsViewController: UICollectionViewDelegateFlowLayout {
         if indexPath.section != 0 {
             navigationController?.pushViewController(detailsController, animated: true)
         }
-        let habit = store.habits[indexPath.row]
+        let habit = HabitsStore.shared.habits[indexPath.row]
         detailsController.habitName = habit.name
         detailsController.currentHabit = habit
     }
