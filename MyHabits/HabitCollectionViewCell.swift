@@ -10,7 +10,6 @@ class HabitCollectionViewCell: UICollectionViewCell {
     let store = HabitsStore.shared
     var currentHabit: Habit?
     var habitTrackClosure: (()->())?
-    var counter = 0
     
     let habitNameLabel: UILabel = {
         let label = UILabel()
@@ -33,7 +32,6 @@ class HabitCollectionViewCell: UICollectionViewCell {
         label.toAutoLayout()
         label.textColor = .systemGray
         label.font = UIFont(name: "Helvetica-Regular", size: 13)
-        
         return label
     }()
     
@@ -61,11 +59,6 @@ class HabitCollectionViewCell: UICollectionViewCell {
     @objc func trackingButtonIsClicked(sender: UIButton) {
         fillCircle()
         habitTrackClosure?()
-        addingToCounter()
-    }
-    
-    func addingToCounter() {
-        counter += 1
     }
     
     func fillCircle() {
@@ -102,6 +95,7 @@ class HabitCollectionViewCell: UICollectionViewCell {
         habitNameLabel.textColor = habit.color
         habitTimeLabel.text = habit.dateString
         habitTrackingButton.layer.borderColor = habit.color.cgColor
+        habitsCounterLabel.text = "Счетчик: \(habit.trackDates.count)"
         
         if habit.isAlreadyTakenToday == true {
             fillCircle()
@@ -109,13 +103,6 @@ class HabitCollectionViewCell: UICollectionViewCell {
         } else {
             habitTrackingButton.backgroundColor = .clear
         }
-        
-        for date in HabitsStore.shared.dates {
-            if HabitsStore.shared.habit(habit, isTrackedIn: date) {
-                counter += 1
-            }
-        }
-        habitsCounterLabel.text = "Счетчик: \(counter)"
     }
 }
 

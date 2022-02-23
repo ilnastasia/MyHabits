@@ -125,7 +125,6 @@ class HabitViewController: UIViewController {
             timePicker.topAnchor.constraint(equalTo: pickedTimeLabel.bottomAnchor, constant: 15),
             timePicker.leftAnchor.constraint(equalTo: view.leftAnchor),
             timePicker.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-            
         ])
     }
 

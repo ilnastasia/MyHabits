@@ -23,7 +23,6 @@ class ProgressCollectionViewCell: UICollectionViewCell {
         view.trackTintColor = .systemGray2
         view.progressTintColor = Colors.purple
         view.layer.cornerRadius = 3.5
-        
         view.clipsToBounds = true
         return view
     }()
