@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let infoController = InfoViewController()
         
         let barAppearance = UINavigationBarAppearance()
+        barAppearance.backgroundColor = .white
         
         let navigationBar = UINavigationBar.appearance()
         navigationBar.standardAppearance = barAppearance

@@ -82,10 +82,9 @@ extension HabitsViewController: UICollectionViewDataSource {
                 fatalError()
             }
             let habit = HabitsStore.shared.habits[indexPath.row]
-            let actionCompleted = habit.isAlreadyTakenToday
             cell.update(with: habit)
             cell.habitTrackClosure = { [weak self] in
-                if actionCompleted == false {
+                if habit.isAlreadyTakenToday == false {
                     HabitsStore.shared.track(habit)
                 }
                 self?.collectionView.reloadData()

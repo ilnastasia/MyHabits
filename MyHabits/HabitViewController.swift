@@ -84,10 +84,10 @@ class HabitViewController: UIViewController {
     }
     
     @objc func pickColorButtonClicked() {
-        let colorPicker = ColorPickerViewController()
+        let colorPicker = UIColorPickerViewController()
         colorPicker.selectedColor = pickColorButton.backgroundColor ?? .black
         colorPicker.delegate = self
-        self.navigationController?.pushViewController(colorPicker, animated: true)
+        self.present(colorPicker, animated: true, completion: nil)
     }
     
     fileprivate func setupConstraints() {
@@ -139,7 +139,6 @@ class HabitViewController: UIViewController {
         setupConstraints()
         tapToHideKeyboard()
         editController()
-        setupNavigationBarButtons()
     }
     
     func setupNavigationBarButtons() {
@@ -157,7 +156,7 @@ class HabitViewController: UIViewController {
         let viewControllers = self.navigationController?.viewControllers
         
         if (viewControllers?.count ?? 0) < 2 {
-            return
+            setupNavigationBarButtons()
         } else {
             let previousVC = viewControllers?[(viewControllers?.count ?? 0) - 2]
             if previousVC is HabitDetailsViewController {
